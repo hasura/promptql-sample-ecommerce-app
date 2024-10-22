@@ -1,7 +1,3 @@
-Here is a sample README for the repository:
-
----
-
 # PromptQL Sample eCommerce App
 
 This is a sample eCommerce application using Hasura PromptQL. Follow the steps below to set it up.
