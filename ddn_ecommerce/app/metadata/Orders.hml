@@ -1,0 +1,196 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Orders
+  fields:
+    - name: orderDate
+      type: Timestamp
+    - name: orderId
+      type: Int4!
+    - name: status
+      type: Varchar
+    - name: totalAmount
+      type: Numeric!
+    - name: userId
+      type: Int4!
+  graphql:
+    typeName: Orders
+    inputTypeName: OrdersInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: postgres
+      dataConnectorObjectType: orders
+      fieldMapping:
+        orderDate:
+          column:
+            name: order_date
+        orderId:
+          column:
+            name: order_id
+        status:
+          column:
+            name: status
+        totalAmount:
+          column:
+            name: total_amount
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Orders
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - orderDate
+          - orderId
+          - status
+          - totalAmount
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: OrdersBoolExp
+  operand:
+    object:
+      type: Orders
+      comparableFields:
+        - fieldName: orderDate
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: orderId
+          booleanExpressionType: Int4BoolExp
+        - fieldName: status
+          booleanExpressionType: VarcharBoolExp
+        - fieldName: totalAmount
+          booleanExpressionType: NumericBoolExp
+        - fieldName: userId
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships:
+        - relationshipName: orderitems
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: OrdersBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: OrdersAggExp
+  operand:
+    object:
+      aggregatedType: Orders
+      aggregatableFields:
+        - fieldName: orderDate
+          aggregateExpression: TimestampAggExp
+        - fieldName: orderId
+          aggregateExpression: Int4AggExp
+        - fieldName: status
+          aggregateExpression: VarcharAggExp
+        - fieldName: totalAmount
+          aggregateExpression: NumericAggExp
+        - fieldName: userId
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: OrdersAggExp
+
+---
+kind: Model
+version: v1
+definition:
+  name: Orders
+  objectType: Orders
+  source:
+    dataConnectorName: postgres
+    collection: orders
+  filterExpressionType: OrdersBoolExp
+  aggregateExpression: OrdersAggExp
+  orderableFields:
+    - fieldName: orderDate
+      orderByDirections:
+        enableAll: true
+    - fieldName: orderId
+      orderByDirections:
+        enableAll: true
+    - fieldName: status
+      orderByDirections:
+        enableAll: true
+    - fieldName: totalAmount
+      orderByDirections:
+        enableAll: true
+    - fieldName: userId
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: orders
+    selectUniques:
+      - queryRootField: ordersByOrderId
+        uniqueIdentifier:
+          - orderId
+    orderByExpressionType: OrdersOrderBy
+    filterInputTypeName: OrdersFilterInput
+    aggregate:
+      queryRootField: ordersAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Orders
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: orderitems
+  sourceType: Orders
+  target:
+    model:
+      name: Orderitems
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: OrderitemsAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: orderId
+      target:
+        modelField:
+          - fieldName: orderId
+  graphql:
+    aggregateFieldName: orderitemsAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: Orders
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: userId
+

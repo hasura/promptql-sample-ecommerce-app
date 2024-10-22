@@ -1,0 +1,218 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Reviews
+  fields:
+    - name: comment
+      type: Text
+    - name: embedding
+      type: Vector
+    - name: productId
+      type: Int4!
+    - name: rating
+      type: Int4!
+    - name: reviewDate
+      type: Timestamp
+    - name: reviewId
+      type: Int4!
+    - name: userId
+      type: Int4!
+  graphql:
+    typeName: Reviews
+    inputTypeName: ReviewsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: postgres
+      dataConnectorObjectType: reviews
+      fieldMapping:
+        comment:
+          column:
+            name: comment
+        embedding:
+          column:
+            name: embedding
+        productId:
+          column:
+            name: product_id
+        rating:
+          column:
+            name: rating
+        reviewDate:
+          column:
+            name: review_date
+        reviewId:
+          column:
+            name: review_id
+        userId:
+          column:
+            name: user_id
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Reviews
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - comment
+          - embedding
+          - productId
+          - rating
+          - reviewDate
+          - reviewId
+          - userId
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ReviewsBoolExp
+  operand:
+    object:
+      type: Reviews
+      comparableFields:
+        - fieldName: comment
+          booleanExpressionType: TextBoolExp
+        - fieldName: embedding
+          booleanExpressionType: VectorBoolExp
+        - fieldName: productId
+          booleanExpressionType: Int4BoolExp
+        - fieldName: rating
+          booleanExpressionType: Int4BoolExp
+        - fieldName: reviewDate
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: reviewId
+          booleanExpressionType: Int4BoolExp
+        - fieldName: userId
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships:
+        - relationshipName: product
+        - relationshipName: user
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ReviewsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ReviewsAggExp
+  operand:
+    object:
+      aggregatedType: Reviews
+      aggregatableFields:
+        - fieldName: comment
+          aggregateExpression: TextAggExp
+        - fieldName: embedding
+          aggregateExpression: VectorAggExp
+        - fieldName: productId
+          aggregateExpression: Int4AggExp
+        - fieldName: rating
+          aggregateExpression: Int4AggExp
+        - fieldName: reviewDate
+          aggregateExpression: TimestampAggExp
+        - fieldName: reviewId
+          aggregateExpression: Int4AggExp
+        - fieldName: userId
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: ReviewsAggExp
+
+---
+kind: Model
+version: v1
+definition:
+  name: Reviews
+  objectType: Reviews
+  source:
+    dataConnectorName: postgres
+    collection: reviews
+  filterExpressionType: ReviewsBoolExp
+  aggregateExpression: ReviewsAggExp
+  orderableFields:
+    - fieldName: comment
+      orderByDirections:
+        enableAll: true
+    - fieldName: embedding
+      orderByDirections:
+        enableAll: true
+    - fieldName: productId
+      orderByDirections:
+        enableAll: true
+    - fieldName: rating
+      orderByDirections:
+        enableAll: true
+    - fieldName: reviewDate
+      orderByDirections:
+        enableAll: true
+    - fieldName: reviewId
+      orderByDirections:
+        enableAll: true
+    - fieldName: userId
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: reviews
+    selectUniques:
+      - queryRootField: reviewsByReviewId
+        uniqueIdentifier:
+          - reviewId
+    orderByExpressionType: ReviewsOrderBy
+    filterInputTypeName: ReviewsFilterInput
+    aggregate:
+      queryRootField: reviewsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Reviews
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: product
+  sourceType: Reviews
+  target:
+    model:
+      name: Products
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: productId
+      target:
+        modelField:
+          - fieldName: productId
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: user
+  sourceType: Reviews
+  target:
+    model:
+      name: Users
+      relationshipType: Object
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: userId
+      target:
+        modelField:
+          - fieldName: userId
+

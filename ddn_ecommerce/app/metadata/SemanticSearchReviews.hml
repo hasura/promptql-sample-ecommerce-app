@@ -1,0 +1,56 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: ReviewRow
+  fields:
+    - name: reviewId
+      type: Float!
+  graphql:
+    typeName: ReviewRow
+    inputTypeName: ReviewRowInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: typescript
+      dataConnectorObjectType: ReviewRow
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: ReviewRow
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - reviewId
+
+---
+kind: Command
+version: v1
+definition:
+  name: SemanticSearchReviews
+  outputType: "[ReviewRow!]!"
+  arguments:
+    - name: limit
+      type: Float
+    - name: offset
+      type: Float
+    - name: text
+      type: String!
+  source:
+    dataConnectorName: typescript
+    dataConnectorCommand:
+      function: semanticSearchReviews
+  graphql:
+    rootFieldName: semanticSearchReviews
+    rootFieldKind: Query
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: SemanticSearchReviews
+  permissions:
+    - role: admin
+      allowExecution: true
+

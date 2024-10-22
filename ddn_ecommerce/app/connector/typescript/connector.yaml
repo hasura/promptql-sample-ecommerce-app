@@ -1,0 +1,20 @@
+kind: Connector
+version: v2
+definition:
+  name: typescript
+  subgraph: app
+  source: hasura/nodejs:v1.8.0
+  context: .
+  envMapping:
+    HASURA_CONNECTOR_PORT:
+      fromEnv: APP_TYPESCRIPT_HASURA_CONNECTOR_PORT
+    HASURA_SERVICE_TOKEN_SECRET:
+      fromEnv: APP_TYPESCRIPT_HASURA_SERVICE_TOKEN_SECRET
+    OTEL_EXPORTER_OTLP_ENDPOINT:
+      fromEnv: APP_TYPESCRIPT_OTEL_EXPORTER_OTLP_ENDPOINT
+    OTEL_SERVICE_NAME:
+      fromEnv: APP_TYPESCRIPT_OTEL_SERVICE_NAME
+    PG_CONNECTION_URI:
+      fromEnv: APP_POSTGRES_CONNECTION_URI
+    OPENAI_API_KEY: 
+      fromEnv: APP_TYPESCRIPT_OPENAI_API_KEY

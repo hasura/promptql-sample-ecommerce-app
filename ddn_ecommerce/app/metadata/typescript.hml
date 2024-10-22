@@ -1,0 +1,76 @@
+kind: DataConnectorLink
+version: v1
+definition:
+  name: typescript
+  url:
+    readWriteUrls:
+      read:
+        valueFromEnv: APP_TYPESCRIPT_READ_URL
+      write:
+        valueFromEnv: APP_TYPESCRIPT_WRITE_URL
+  headers:
+    Authorization:
+      valueFromEnv: APP_TYPESCRIPT_AUTHORIZATION_HEADER
+  schema:
+    version: v0.1
+    schema:
+      scalar_types:
+        Float:
+          representation:
+            type: float64
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+        String:
+          representation:
+            type: string
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+      object_types:
+        ReviewRow:
+          fields:
+            reviewId:
+              type:
+                type: named
+                name: Float
+      collections: []
+      functions:
+        - name: semanticSearchReviews
+          arguments:
+            limit:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Float
+            offset:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: Float
+            text:
+              type:
+                type: named
+                name: String
+          result_type:
+            type: array
+            element_type:
+              type: named
+              name: ReviewRow
+      procedures:
+        - name: vectorize
+          arguments: {}
+          result_type:
+            type: named
+            name: String
+    capabilities:
+      version: 0.1.6
+      capabilities:
+        query:
+          variables: {}
+          nested_fields: {}
+        mutation: {}

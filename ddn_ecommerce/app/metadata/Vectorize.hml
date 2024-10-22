@@ -1,0 +1,23 @@
+---
+kind: Command
+version: v1
+definition:
+  name: Vectorize
+  outputType: String!
+  source:
+    dataConnectorName: typescript
+    dataConnectorCommand:
+      procedure: vectorize
+  graphql:
+    rootFieldName: vectorize
+    rootFieldKind: Mutation
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: Vectorize
+  permissions:
+    - role: admin
+      allowExecution: true
+

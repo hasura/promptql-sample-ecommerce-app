@@ -1,0 +1,226 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: Products
+  fields:
+    - name: category
+      type: Varchar!
+    - name: createdAt
+      type: Timestamp
+    - name: description
+      type: Text
+    - name: price
+      type: Numeric!
+    - name: productId
+      type: Int4!
+    - name: productName
+      type: Varchar!
+    - name: stockQuantity
+      type: Int4
+  graphql:
+    typeName: Products
+    inputTypeName: ProductsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: postgres
+      dataConnectorObjectType: products
+      fieldMapping:
+        category:
+          column:
+            name: category
+        createdAt:
+          column:
+            name: created_at
+        description:
+          column:
+            name: description
+        price:
+          column:
+            name: price
+        productId:
+          column:
+            name: product_id
+        productName:
+          column:
+            name: product_name
+        stockQuantity:
+          column:
+            name: stock_quantity
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Products
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - category
+          - createdAt
+          - description
+          - price
+          - productId
+          - productName
+          - stockQuantity
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: ProductsBoolExp
+  operand:
+    object:
+      type: Products
+      comparableFields:
+        - fieldName: category
+          booleanExpressionType: VarcharBoolExp
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: description
+          booleanExpressionType: TextBoolExp
+        - fieldName: price
+          booleanExpressionType: NumericBoolExp
+        - fieldName: productId
+          booleanExpressionType: Int4BoolExp
+        - fieldName: productName
+          booleanExpressionType: VarcharBoolExp
+        - fieldName: stockQuantity
+          booleanExpressionType: Int4BoolExp
+      comparableRelationships:
+        - relationshipName: orderitems
+        - relationshipName: reviews
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: ProductsBoolExp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: ProductsAggExp
+  operand:
+    object:
+      aggregatedType: Products
+      aggregatableFields:
+        - fieldName: category
+          aggregateExpression: VarcharAggExp
+        - fieldName: createdAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: description
+          aggregateExpression: TextAggExp
+        - fieldName: price
+          aggregateExpression: NumericAggExp
+        - fieldName: productId
+          aggregateExpression: Int4AggExp
+        - fieldName: productName
+          aggregateExpression: VarcharAggExp
+        - fieldName: stockQuantity
+          aggregateExpression: Int4AggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: ProductsAggExp
+
+---
+kind: Model
+version: v1
+definition:
+  name: Products
+  objectType: Products
+  source:
+    dataConnectorName: postgres
+    collection: products
+  filterExpressionType: ProductsBoolExp
+  aggregateExpression: ProductsAggExp
+  orderableFields:
+    - fieldName: category
+      orderByDirections:
+        enableAll: true
+    - fieldName: createdAt
+      orderByDirections:
+        enableAll: true
+    - fieldName: description
+      orderByDirections:
+        enableAll: true
+    - fieldName: price
+      orderByDirections:
+        enableAll: true
+    - fieldName: productId
+      orderByDirections:
+        enableAll: true
+    - fieldName: productName
+      orderByDirections:
+        enableAll: true
+    - fieldName: stockQuantity
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: products
+    selectUniques:
+      - queryRootField: productsByProductId
+        uniqueIdentifier:
+          - productId
+    orderByExpressionType: ProductsOrderBy
+    filterInputTypeName: ProductsFilterInput
+    aggregate:
+      queryRootField: productsAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Products
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: orderitems
+  sourceType: Products
+  target:
+    model:
+      name: Orderitems
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: OrderitemsAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: productId
+      target:
+        modelField:
+          - fieldName: productId
+  graphql:
+    aggregateFieldName: orderitemsAggregate
+
+---
+kind: Relationship
+version: v1
+definition:
+  name: reviews
+  sourceType: Products
+  target:
+    model:
+      name: Reviews
+      relationshipType: Array
+      aggregate:
+        aggregateExpression: ReviewsAggExp
+  mapping:
+    - source:
+        fieldPath:
+          - fieldName: productId
+      target:
+        modelField:
+          - fieldName: productId
+  graphql:
+    aggregateFieldName: reviewsAggregate
+
