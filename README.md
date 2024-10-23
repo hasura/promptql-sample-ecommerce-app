@@ -19,10 +19,14 @@ This is a sample eCommerce application using Hasura PromptQL. Follow the steps b
    ddn auth login
    ```
 
-4. Set up environment variables:
+4. Change to the `ddn_ecommerce` directory:
+   ```bash
+   cd ddn_ecommerce
+   ```
+5. Set up environment variables:
    - Copy the `.env.example` file:
      ```bash
-     cp ddn_ecommerce/.env.example ddn_ecommerce/.env
+     cp .env.example .env
      ```
    - Edit `.env` to include your API keys:
      - Get your **Hasura DDN PAT**:
@@ -41,7 +45,7 @@ This is a sample eCommerce application using Hasura PromptQL. Follow the steps b
 
 ## Running the App
 
-1. Start the playground server:
+1. Start the playground server from the `ddn_ecommerce` directory:
    ```bash
    ddn run docker-start
    ```
