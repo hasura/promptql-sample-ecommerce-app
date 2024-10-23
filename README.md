@@ -51,7 +51,12 @@ This is a sample eCommerce application using Hasura PromptQL. Follow the steps b
    ddn run docker-start
    ```
 
-2. Open the Hasura Console:
+2. Create embeddings for the data.
+   ```bash
+   curl -X POST http://localhost:3000/graphql -H 'content-type: application/json' -d '{ "query": "mutation { vectorize }" }'
+   ```
+
+3. Open the Hasura Console:
    Go to [PromptQL Playground on Hasura Local Console](https://console.hasura.io/local/chat) > Click on the gear icon on the top left next to PromptQL Playground > Enter your playground URL (`http://localhost:5000`).
 
 **Note:** This setup works best on Chrome. Other browsers may experience issues.
