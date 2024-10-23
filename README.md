@@ -39,7 +39,7 @@ This is a sample eCommerce application using Hasura PromptQL. Follow the steps b
      - Get your **PromptQL API key**:
        - Create a Hasura DDN project:
          ```bash
-         ddn project init
+         ddn project create
          ```
        - Go to [Hasura DDN Console](https://console.hasura.io/) > select your project > Go to Settings (bottom left corner) > Go to PromptQL under **Project Settings** > Generate New API Key (remember to copy the key).
        - Update the `PROMPTQL_SECRET_KEY` variable in `.env` with the obtained API key.
