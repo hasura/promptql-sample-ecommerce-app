@@ -1,3 +1,5 @@
+include:
+  - path: ../../../../ecommerce_data/compose.yaml
 services:
   app_postgres:
     build:
@@ -22,3 +24,5 @@ services:
         target: 8080
         published: "6478"
         protocol: tcp
+    depends_on:
+      - postgres

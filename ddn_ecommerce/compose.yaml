@@ -1,5 +1,4 @@
 include:
-  - path: ../ecommerce_data/compose.yaml
   - path: ../promptql_playground/compose.yaml
   - path: app/connector/postgres/compose.yaml
   - path: app/connector/typescript/compose.yaml
