@@ -41,7 +41,7 @@ This is a sample eCommerce application using Hasura PromptQL. Follow the steps b
          ```bash
          ddn project create
          ```
-       - Go to [Hasura DDN Console](https://console.hasura.io/) > select your project > Go to Settings (bottom left corner) > Go to PromptQL under **Project Settings** > Generate New API Key (remember to copy the key).
+       - Go to [Hasura DDN Console](https://console.hasura.io/) > Select your project > Go to Settings (bottom left corner) > Go to PromptQL under **Project Settings** > Enable PromptQL > Generate New API Key (remember to copy the key).
        - Update the `PROMPTQL_SECRET_KEY` variable in `.env` with the obtained API key.
 
 ## Running the App
@@ -52,7 +52,7 @@ This is a sample eCommerce application using Hasura PromptQL. Follow the steps b
    ```
 
 2. Open the Hasura Console:
-   Go to [PromptQL Playground on Hasura Local Console](https://console.hasura.io/local/chat), enter your playground URL (`http://localhost:5000`).
+   Go to [PromptQL Playground on Hasura Local Console](https://console.hasura.io/local/chat) > Click on the gear icon on the top left next to PromptQL Playground > Enter your playground URL (`http://localhost:5000`).
 
 **Note:** This setup works best on Chrome. Other browsers may experience issues.
 
