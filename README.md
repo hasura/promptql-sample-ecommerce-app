@@ -57,7 +57,7 @@ This is a sample eCommerce application using Hasura PromptQL. Follow the steps b
    ```
 
 3. Open the Hasura Console:
-   Go to [PromptQL Playground on Hasura Local Console](https://console.hasura.io/local/chat) > Click on the gear icon on the top left next to PromptQL Playground > Enter your playground URL (`http://localhost:5000`).
+   Go to [PromptQL Playground on Hasura Local Console](https://console.hasura.io/local/chat) > Click on the gear icon on the top left next to PromptQL Playground > Enter your playground URL (`http://localhost:5001`).
 
 **Note:** This setup works best on Chrome. Other browsers may experience issues.
 

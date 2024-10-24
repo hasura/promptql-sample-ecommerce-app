@@ -3,7 +3,7 @@ services:
   promptql-playground:
     image: us-east4-docker.pkg.dev/promptql-execution-service/promptql-public/promptql-playground-local
     ports:
-      - "5000:5000"
+      - "5001:5000"
     environment:
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://host.docker.internal:4317}
       ENGINE_URL: ${HASURA_DDN_URL:-http://host.docker.internal:3000/v1/sql}
